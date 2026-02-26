@@ -116,6 +116,22 @@ Important:
 - Applications: apply + status update + verify
 - Logs: list as staff/officer
 
+## Testing Screenshots
+### Home
+![Home](docs/screenshots/home.png)
+
+### Login
+![Login](docs/screenshots/login.png)
+
+### Register
+![Register](docs/screenshots/register.png)
+
+### Services
+![Services](docs/screenshots/services.png)
+
+### Applications
+![Applications](docs/screenshots/applications.png)
+
 ## Logging Events
 - `REGISTER`, `LOGIN`, `LOGOUT`
 - `CREATE_SERVICE`, `UPDATE_SERVICE`, `DELETE_SERVICE`
