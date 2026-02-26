@@ -2,6 +2,9 @@
 
 Full-stack web app for Gram Panchayat services.
 
+## Repository
+- GitHub: `https://github.com/rdebnath1234/Digital-E-Gram-Panchayat`
+
 ## Stack
 - Frontend: React + Vite + React Router
 - Backend: Node.js + Express
@@ -34,21 +37,19 @@ Full-stack web app for Gram Panchayat services.
 ## Local Development
 ### Backend
 1. `cd server`
-2. `cp .env.example .env`
-3. Configure `.env`:
+2. Configure `.env`:
    - `PORT=5001`
    - `JWT_SECRET=...`
    - `FIREBASE_PROJECT_ID=...`
    - `GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/service-account.json`
-4. `npm install`
-5. `npm run dev`
+3. `npm install`
+4. `npm run dev`
 
 ### Frontend
 1. `cd client`
-2. `cp .env.example .env`
-3. Ensure: `VITE_API_BASE_URL=http://localhost:5001/api`
-4. `npm install`
-5. `npm run dev`
+2. Ensure: `VITE_API_BASE_URL=http://localhost:5001/api`
+3. `npm install`
+4. `npm run dev`
 
 - Frontend (dev): `http://localhost:5173`
 - Backend: `http://localhost:5001`
@@ -77,19 +78,22 @@ Notes:
 ## Docker Deployment
 Run from project root.
 
-1. `cp .env.docker.example .env.docker`
-2. Set in `.env.docker`:
+1. Set in `.env.docker`:
    - `GOOGLE_APPLICATION_CREDENTIALS_HOST=/absolute/host/path/to/service-account.json`
    - `VITE_API_BASE_URL=http://localhost:5001/api`
-3. Ensure `server/.env` has correct `JWT_SECRET` and `FIREBASE_PROJECT_ID`.
-4. Start:
+2. Ensure `server/.env` has correct `JWT_SECRET` and `FIREBASE_PROJECT_ID`.
+3. Start:
    - `docker compose --env-file .env.docker up --build -d`
-5. Access:
+4. Access:
    - Frontend: `http://localhost:8080`
    - Backend health: `http://localhost:5001/health`
 
 Stop:
 - `docker compose down`
+
+Important:
+- Backend container must reach Google APIs (Firestore) over the network.
+- If login/seed calls hang in Docker, verify outbound HTTPS from container to `firestore.googleapis.com`.
 
 ## API
 - `POST /api/auth/register`
