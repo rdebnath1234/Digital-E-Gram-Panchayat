@@ -14,9 +14,9 @@ Full-stack web app for Gram Panchayat services.
 
 ## Features
 - Role flows:
-  - `user`: register/login, view/search services, apply, track own application status
-  - `staff`: login, update application status, view logs
-  - `officer/admin`: login, create/update/delete services, update status, view logs
+  - `user`: public register/login, view/search services, apply, track own application status
+  - `staff`: seed/admin-created login, update application status, view logs
+  - `officer/admin`: seed/admin-created login, create/update/delete services, update status, view logs
 - Action logging in Firestore `logs` collection
 - Seed scripts for fast creation of `staff` / `officer` / `admin`
 
@@ -72,6 +72,7 @@ Run from `server/`.
 Notes:
 - Upsert by email: existing users are updated.
 - Allowed roles: `user`, `staff`, `officer`, `admin`.
+- Public self-registration is restricted to `user` accounts only. Elevated roles must be created via seed scripts (or a future admin-only flow).
 
 ## Current Seeded Test Logins
 - `staff@example.com` / `Pass@123` (role: `staff`)
@@ -84,6 +85,7 @@ Run from project root.
 2. Set in `.env.docker`:
    - `FIREBASE_SERVICE_ACCOUNT_KEY={"type":"service_account",...}`
    - `VITE_API_BASE_URL=http://localhost:5001/api`
+   - Do not use `GOOGLE_APPLICATION_CREDENTIALS_HOST` here; Docker Compose reads the inline JSON from `FIREBASE_SERVICE_ACCOUNT_KEY`.
 3. Ensure `server/.env` has correct `JWT_SECRET` and `FIREBASE_PROJECT_ID`.
 4. Start:
    - `docker compose --env-file .env.docker up --build -d`
@@ -114,6 +116,7 @@ Deploy the backend from the `server/` directory.
 Notes:
 - `FIREBASE_SERVICE_ACCOUNT_KEY` is the safest option on Railway because there is no local credentials file to mount.
 - The server now loads `server/.env` consistently and can derive `project_id` from the service-account JSON when needed.
+- Public registration on Railway is also limited to `user` accounts. Seed `staff`, `officer`, and `admin` separately.
 
 ## API
 - `POST /api/auth/register`
@@ -131,7 +134,7 @@ Notes:
 
 ## Smoke Test Checklist
 - Health: `GET /health`
-- Auth: register + login for user/staff/officer
+- Auth: register + login for `user`; login for seeded `staff`/`officer`
 - Services: create/list/delete
 - Applications: apply + status update + verify
 - Logs: list as staff/officer

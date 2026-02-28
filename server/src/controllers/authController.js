@@ -12,13 +12,16 @@ export async function register(req, res, next) {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) return res.status(400).json({ message: "Missing fields" });
+    if (req.body?.role && String(req.body.role).trim().toLowerCase() !== "user") {
+      return res.status(403).json({ message: "Public registration is limited to user accounts" });
+    }
 
     const exists = await findUserByEmail(email);
     if (exists) return res.status(409).json({ message: "Email already used" });
 
     const passwordHash = await bcrypt.hash(password, 10);
     const user = await createUser({ name, email, passwordHash, role: "user" });
-    await logAction("REGISTER", { email }, user);
+    await logAction("REGISTER", { email, role: "user" }, user);
     res.status(201).json({ user: publicUser(user) });
   } catch (error) {
     next(error);
