@@ -10,7 +10,7 @@ Full-stack web app for Gram Panchayat services.
 - Backend: Node.js + Express
 - Database: Firebase Firestore
 - Auth: JWT (role-based)
-- Deployment: Docker + Docker Compose
+- Deployment: Docker + Docker Compose + Railway
 
 ## Features
 - Role flows:
@@ -33,6 +33,8 @@ Full-stack web app for Gram Panchayat services.
 - `server/` Express API
 - `docker-compose.yml` multi-container deployment
 - `.env.docker.example` Docker env template
+- `railway.json` backend Railway build config
+- `Dockerfile.railway` backend Railway Dockerfile
 
 ## Local Development
 ### Backend
@@ -103,15 +105,18 @@ Important:
 - If login/seed calls hang in Docker, verify outbound HTTPS from container to `firestore.googleapis.com`.
 
 ## Railway Deployment
-Deploy the backend from the `server/` directory.
+This project is deployed as two Railway services:
+- Frontend: [https://digital-e-gram-panchayat-web-production.up.railway.app](https://digital-e-gram-panchayat-web-production.up.railway.app)
+- Backend API: [https://digital-e-gram-panchayat-api-production.up.railway.app](https://digital-e-gram-panchayat-api-production.up.railway.app)
 
+### Backend Service
 1. Create a Railway service from this repo.
 2. Set Railway variables:
    - `PORT=5001`
    - `JWT_SECRET=...`
    - `FIREBASE_PROJECT_ID=your-firebase-project-id`
    - `FIREBASE_SERVICE_ACCOUNT_KEY={"type":"service_account",...}`
-3. Deploy.
+3. Deploy from the repo root.
 
 Notes:
 - The repo includes [railway.json](/Users/riyadebnathdas/Desktop/Projects/Digital E Gram Panchayat/railway.json) and [Dockerfile.railway](/Users/riyadebnathdas/Desktop/Projects/Digital E Gram Panchayat/Dockerfile.railway) so Railway can build the backend directly from the repo root.
@@ -119,7 +124,18 @@ Notes:
 - The server now loads `server/.env` consistently and can derive `project_id` from the service-account JSON when needed.
 - Public registration on Railway is also limited to `user` accounts. Seed `staff`, `officer`, and `admin` separately.
 
+### Frontend Service
+1. Create a separate Railway service for the client.
+2. Deploy the `client/` directory as the build root.
+3. Set `VITE_API_BASE_URL=https://digital-e-gram-panchayat-api-production.up.railway.app/api` if you want to override the Dockerfile default.
+
+Notes:
+- The frontend currently uses [client/Dockerfile](/Users/riyadebnathdas/Desktop/Projects/Digital E Gram Panchayat/client/Dockerfile) and builds to an Nginx container.
+- The frontend service was deployed with `railway up client --path-as-root`.
+- The frontend is currently a separate Railway service, not a repo-root `railway.json` service.
+
 ## API
+- Base URL: `https://digital-e-gram-panchayat-api-production.up.railway.app/api`
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
