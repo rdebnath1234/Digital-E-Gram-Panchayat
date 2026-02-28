@@ -107,7 +107,7 @@ Important:
 ## Railway Deployment
 This project is deployed as two Railway services:
 - Frontend: [https://digital-e-gram-panchayat-web-production.up.railway.app](https://digital-e-gram-panchayat-web-production.up.railway.app)
-- Backend API: [https://digital-e-gram-panchayat-api-production.up.railway.app](https://digital-e-gram-panchayat-api-production.up.railway.app)
+- Backend API: [https://digital-e-gram-panchayat-api-production.up.railway.app](https://digital-e-gram-panchayat-api-production.up.railway.app/health)
 
 ### Backend Service
 1. Create a Railway service from this repo.
