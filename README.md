@@ -105,7 +105,7 @@ Important:
 ## Railway Deployment
 Deploy the backend from the `server/` directory.
 
-1. Create a Railway service from this repo with root directory set to `server`.
+1. Create a Railway service from this repo.
 2. Set Railway variables:
    - `PORT=5001`
    - `JWT_SECRET=...`
@@ -114,6 +114,7 @@ Deploy the backend from the `server/` directory.
 3. Deploy.
 
 Notes:
+- The repo includes [railway.json](/Users/riyadebnathdas/Desktop/Projects/Digital E Gram Panchayat/railway.json) and [Dockerfile.railway](/Users/riyadebnathdas/Desktop/Projects/Digital E Gram Panchayat/Dockerfile.railway) so Railway can build the backend directly from the repo root.
 - `FIREBASE_SERVICE_ACCOUNT_KEY` is the safest option on Railway because there is no local credentials file to mount.
 - The server now loads `server/.env` consistently and can derive `project_id` from the service-account JSON when needed.
 - Public registration on Railway is also limited to `user` accounts. Seed `staff`, `officer`, and `admin` separately.
