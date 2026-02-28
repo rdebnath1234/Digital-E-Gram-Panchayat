@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "../src/config/env.js";
 import bcrypt from "bcryptjs";
 import { db } from "../src/config/firebase.js";
 

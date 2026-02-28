@@ -6,10 +6,9 @@ services:
     env_file:
       - ./server/.env
     environment:
-      - PORT=5001
-      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/service-account.json
-    volumes:
-      - ${GOOGLE_APPLICATION_CREDENTIALS_HOST:-./server/credentials/service-account.json}:/app/credentials/service-account.json:ro
+      PORT: 5001
+      GOOGLE_APPLICATION_CREDENTIALS: ""
+      FIREBASE_SERVICE_ACCOUNT_KEY: ${FIREBASE_SERVICE_ACCOUNT_KEY:-}
     ports:
       - "5001:5001"
     restart: unless-stopped

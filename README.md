@@ -40,8 +40,10 @@ Full-stack web app for Gram Panchayat services.
 2. Configure `.env`:
    - `PORT=5001`
    - `JWT_SECRET=...`
-   - `FIREBASE_PROJECT_ID=...`
-   - `GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/service-account.json`
+   - `FIREBASE_PROJECT_ID=your-firebase-project-id`
+   - Choose one credential mode:
+     - `GOOGLE_APPLICATION_CREDENTIALS=/absolute/path/service-account.json`
+     - or `FIREBASE_SERVICE_ACCOUNT_KEY={"type":"service_account",...}`
 3. `npm install`
 4. `npm run dev`
 
@@ -78,13 +80,14 @@ Notes:
 ## Docker Deployment
 Run from project root.
 
-1. Set in `.env.docker`:
-   - `GOOGLE_APPLICATION_CREDENTIALS_HOST=/absolute/host/path/to/service-account.json`
+1. Copy `.env.docker.example` to `.env.docker`.
+2. Set in `.env.docker`:
+   - `FIREBASE_SERVICE_ACCOUNT_KEY={"type":"service_account",...}`
    - `VITE_API_BASE_URL=http://localhost:5001/api`
-2. Ensure `server/.env` has correct `JWT_SECRET` and `FIREBASE_PROJECT_ID`.
-3. Start:
+3. Ensure `server/.env` has correct `JWT_SECRET` and `FIREBASE_PROJECT_ID`.
+4. Start:
    - `docker compose --env-file .env.docker up --build -d`
-4. Access:
+5. Access:
    - Frontend: `http://localhost:8080`
    - Backend health: `http://localhost:5001/health`
 
@@ -92,8 +95,25 @@ Stop:
 - `docker compose down`
 
 Important:
+- The Docker setup uses `FIREBASE_SERVICE_ACCOUNT_KEY` so the backend does not depend on a host bind mount for credentials.
+- Backend can also read `project_id` from the service-account JSON, but keeping `FIREBASE_PROJECT_ID` in `server/.env` is still recommended.
 - Backend container must reach Google APIs (Firestore) over the network.
 - If login/seed calls hang in Docker, verify outbound HTTPS from container to `firestore.googleapis.com`.
+
+## Railway Deployment
+Deploy the backend from the `server/` directory.
+
+1. Create a Railway service from this repo with root directory set to `server`.
+2. Set Railway variables:
+   - `PORT=5001`
+   - `JWT_SECRET=...`
+   - `FIREBASE_PROJECT_ID=your-firebase-project-id`
+   - `FIREBASE_SERVICE_ACCOUNT_KEY={"type":"service_account",...}`
+3. Deploy.
+
+Notes:
+- `FIREBASE_SERVICE_ACCOUNT_KEY` is the safest option on Railway because there is no local credentials file to mount.
+- The server now loads `server/.env` consistently and can derive `project_id` from the service-account JSON when needed.
 
 ## API
 - `POST /api/auth/register`

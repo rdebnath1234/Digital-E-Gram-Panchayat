@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "../src/config/env.js";
 import { spawn } from "node:child_process";
 
 function runSeed({ name, email, password, role }) {
