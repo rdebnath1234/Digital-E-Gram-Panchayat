@@ -7,7 +7,7 @@ RUN npm ci
 
 COPY . .
 
-ARG VITE_API_BASE_URL=http://localhost:5001/api
+ARG VITE_API_BASE_URL=https://digital-e-gram-panchayat-production.up.railway.app/api
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 RUN npm run build
